@@ -1,6 +1,6 @@
 ﻿// Type definitions for Kii SDK
 // Kii cloud : http://jp-cloud.kii.com/
-// Base on "Cloud SDK v2.1.19 "
+// Base on "Cloud SDK v2.1.21 "
 // http://documentation.kii.com/references/js/storage/latest/index.html
 
 // Kii

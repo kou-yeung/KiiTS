@@ -17,6 +17,8 @@ declare module KiiCloud {
         //Creates a reference to a bucket for this user 
         //The bucket will be created / accessed within this app's scope
         public static bucketWithName(bucketName: string): KiiBucket;
+        // Returns access token lifetime in seconds.
+        public static getAccessTokenExpiration(): number;
         //Retrieve the current app ID
         public static getAppID(): string;
         //Retrieve the current app key
@@ -33,6 +35,8 @@ declare module KiiCloud {
         public static initialize(appId: string, appKey: string);
         //Initialize the Kii SDK with a specific URL Should be the first Kii SDK action your application makes
         public static initializeWithSite(appId: string, appKey: string, site: string);
+        // Set the access token lifetime in seconds.
+        public static setAccessTokenExpiration(expiresIn: number);
     }
 }
 
@@ -95,6 +99,12 @@ declare module KiiCloud {
     export class KiiAppAdminContext {
         //Creates a reference to a bucket operated by app admin.
         public bucketWithName(bucketName: string): KiiBucket;
+        // Find registered KiiUser with the email.
+        public findUserByEmail(email: string, callbacks: { success(adminContext: KiiAppAdminContext, theFoundUser: KiiUser); failure(adminContext: KiiAppAdminContext, anErrorString) });
+        // Find registered KiiUser with the phone.
+        public findUserByPhone(phone: string, callbacks: { success(adminContext: KiiAppAdminContext, theFoundUser: KiiUser); failure(adminContext: KiiAppAdminContext, anErrorString) });
+        //Find registered KiiUser with the user name.
+        public findUserByUsername(username: string, callbacks: { success(adminContext: KiiAppAdminContext, theFoundUser: KiiUser); failure(adminContext: KiiAppAdminContext, anErrorString) });
         //Creates a reference to a group operated by app admin using group's ID.
         public groupWithID(groupId: string): KiiGroup;
         //Creates a reference to a group operated by app admin.
@@ -149,6 +159,8 @@ declare module KiiCloud {
         public static greaterThan(key:string, value:any);
         //Create an expression of the form(key >= value)
         public static greaterThanOrEqual(key: string, value: any);
+        //Create an expression of the form (key in values)
+        public static inClause(key:string, values:any[]);
         //Create an expression of the form(key < value)
         public static lessThan(key: string, value: any);
         //Create an expression of the form(key <= value)
@@ -335,7 +347,13 @@ declare module KiiCloud {
         //Updates the user's email address on the server
         public changeEmail(newEmail: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string)});
         //Updates the user's phone number on the server
-        public changePhone(newPhoneNumber: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string)});
+        public changePhone(newPhoneNumber: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
+        //Find registered KiiUser with the email.
+        public static findUserByEmail(email:string, callbacks: { success(theFoundUser:KiiUser); failure(anErrorString:string) });
+        //Find registered KiiUser with the phone.
+        public static findUserByPhone(phone: string, callbacks: { success(theFoundUser: KiiUser); failure(anErrorString: string) });
+        //Find registered KiiUser with the user name.
+        public static findUserByUsername(username: string, callbacks: { success(theFoundUser: KiiUser); failure(anErrorString: string) });
         //Gets the value associated with the given key
         public get<T>(key: string): T;
         //Get the access token for the user - only available if the user is currently logged in
@@ -363,6 +381,8 @@ declare module KiiCloud {
         //Get the username of the given user
         public getUsername(): string;
         public getUUID(): string;
+        //Get whether or not the user is pseudo user.
+        public isPseudoUser(): boolean;
         //Checks to see if there is a user authenticated with the SDK
         public static loggedIn(): boolean;
         //Logs the currently logged- in user out of the KiiSDK
@@ -374,9 +394,14 @@ declare module KiiCloud {
         public objectURI(): string;
         //Retrieve the groups owned by this user.
         public ownerOfGroups(callbacks: { success(theUser: KiiUser, groupList: KiiGroup[]); failure(theUser: KiiUser, anErrorString: string) });
+        //Sets credentials data and custom fields to pseudo user.
+        // for detail : http://documentation.kii.com/references/js/storage/latest/symbols/KiiUser.html#putIdentity
+        public putIdentity(identityData: Object, password: string, callbacks: { success(user: KiiUser); failure(user: KiiUser, errorString: string) }, userFields?: Object, removeFields?: Object);
         //Updates the local user's data with the user data on the server 
         //The user must exist on the server.
         public refresh(callbacks: { success(theRefreshedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
+        //Registers a user as pseudo user with the server
+        public static registerAsPseudoUser(callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) }, userFields?:Object);
         //Registers a user with the server 
         //The user object must have an associated email / password combination.
         public register(callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
@@ -398,6 +423,9 @@ declare module KiiCloud {
         public setCountry(value: string);
         //Set the display name associated with this user.
         public setDisplayName(value: string);
+        //Update user attributes.
+        // for detail : http://documentation.kii.com/references/js/storage/latest/symbols/KiiUser.html#update
+        update(identityData: Object, callbacks: { success(user: KiiUser); failure(user: KiiUser, errorString: string) }, userFields?: Object, removeFields?: Object)
         //Update a user's password on the server 
         public updatePassword(fromPassword: string, toPassword: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
         //Create a user object to prepare for registration with credentials pre - filled 

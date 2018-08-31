@@ -1,6 +1,6 @@
-﻿// Type definitions for Kii SDK
+// Type definitions for Kii SDK
 // Kii cloud : http://jp-cloud.kii.com/
-// Base on "Cloud SDK v2.1.21 "
+// Base on "Cloud SDK v2.1.21 " ( will update to v2.4.13 )
 // http://documentation.kii.com/references/js/storage/latest/index.html
 
 // Kii
@@ -13,7 +13,7 @@ declare module KiiCloud {
     }
     export class Kii {
         //Authenticate as app admin.
-        public static authenticateAsAppAdmin(clientId: string, clientSecret: string, callbacks: { success(adminContext:KiiAppAdminContext); failure(error: string, statusCode:number) });
+        public static authenticateAsAppAdmin(clientId: string, clientSecret: string, callbacks: { success(adminContext: KiiAppAdminContext); failure(error: string, statusCode: number) });
         //Creates a reference to a bucket for this user 
         //The bucket will be created / accessed within this app's scope
         public static bucketWithName(bucketName: string): KiiBucket;
@@ -30,7 +30,7 @@ declare module KiiCloud {
         //Creates a reference to a group with the given name
         public static groupWithName(groupName: string): KiiGroup;
         //Creates a reference to a group with the given name and a list of default members
-        public static groupWithNameAndMembers(groupName:string, members:KiiUser[]): KiiGroup;
+        public static groupWithNameAndMembers(groupName: string, members: KiiUser[]): KiiGroup;
         //Initialize the Kii SDK Should be the first Kii SDK action your application makes
         public static initialize(appId: string, appKey: string);
         //Initialize the Kii SDK with a specific URL Should be the first Kii SDK action your application makes
@@ -50,7 +50,7 @@ declare module KiiCloud {
         //Remove a KiiACLEntry to the local object.
         public removeACLEntry(entry: KiiACLEntry);
         //Save the list of ACLEntry objects associated with this ACL object to the server
-        public save(callbacks: { success(theSaveACL: KiiACL);failure(theACL: KiiACL,errorString:string) });
+        public save(callbacks: { success(theSaveACL: KiiACL); failure(theACL: KiiACL, errorString: string) });
     }
 }
 
@@ -156,21 +156,21 @@ declare module KiiCloud {
         //Create a clause of geo distance.
         public static geoDistance(key: string, center: KiiGeoPoint, radius: number, putDistanceInto: string): KiiClause;
         //Create an expression of the form(key > value)
-        public static greaterThan(key:string, value:any);
+        public static greaterThan(key: string, value: any);
         //Create an expression of the form(key >= value)
         public static greaterThanOrEqual(key: string, value: any);
         //Create an expression of the form (key in values)
-        public static inClause(key:string, values:any[]);
+        public static inClause(key: string, values: any[]);
         //Create an expression of the form(key < value)
         public static lessThan(key: string, value: any);
         //Create an expression of the form(key <= value)
-        public static lessThanOrEqual(key:string, value:any);
+        public static lessThanOrEqual(key: string, value: any);
         //Create an expression of the form(key != value)
-        public static notEquals(key:string, value:any);
+        public static notEquals(key: string, value: any);
         //Create a KiiClause with the OR operator concatenating multiple KiiClause objects
         public static or(...restOfClause: KiiClause[]);
         //Create an expression of the form(key STARTS WITH value)
-        public static startsWith(key:string, value:any);
+        public static startsWith(key: string, value: any);
     }
 }
 
@@ -196,18 +196,18 @@ declare module KiiCloud {
         //The bucket will be created / accessed within this group's scope
         public bucketWithName(bucketName: string): KiiBucket;
         //Updates the group name on the server
-        public changeGroupName(newName: string, callbacks: { success(theRenamedGroup: KiiGroup); failure(theGroup: KiiGroup, anErrorString:string)});
+        public changeGroupName(newName: string, callbacks: { success(theRenamedGroup: KiiGroup); failure(theGroup: KiiGroup, anErrorString: string) });
         //Returns the owner of this group if this group holds the information of owner.
         public getCachedOwner(): KiiUser;
         //Get the ID of the current KiiGroup instance.
         public getID(): string;
         //Gets a list of all current members of a group
-        public getMemberList(callbacks: { success(theGroup: KiiGroup, memberList:KiiUser[]); failure(theGroup:KiiGroup, anErrorString:string, theUsersFailedAdd:KiiUser[], theUsersFailedRemove:KiiUser[])});
+        public getMemberList(callbacks: { success(theGroup: KiiGroup, memberList: KiiUser[]); failure(theGroup: KiiGroup, anErrorString: string, theUsersFailedAdd: KiiUser[], theUsersFailedRemove: KiiUser[]) });
         //The name of this group
         public getName(): string;
         //Gets the owner of the associated group This API does not return all the properties of the owner.
         public getOwner(callbacks: { success(theGroup: KiiGroup, theOwner: KiiUser); failure(theGroup: KiiGroup, anErrorString: string) });
-        public getUUID():string;
+        public getUUID(): string;
         //Instantiate KiiGroup that refers to existing group which has specified ID.
         public static groupWithID(groupId: string): KiiGroup;
         //Creates a reference to a group with the given name
@@ -215,7 +215,7 @@ declare module KiiCloud {
         public static groupWithName(groupName: string): KiiGroup;
         //Creates a reference to a group with the given name and a list of default members
         //Note: Returned instance from this API can not operate existing KiiGroup.
-        public static groupWithNameAndMembers(groupName:string, members:KiiUser[]): KiiGroup;
+        public static groupWithNameAndMembers(groupName: string, members: KiiUser[]): KiiGroup;
         //Generate a new KiiGroup based on a given URI
         //Note: Returned instance from this API can operate existing KiiGroup.
         public static groupWithURI(uri: string): KiiGroup;
@@ -224,7 +224,7 @@ declare module KiiCloud {
         public objectURI(): string;
         //Updates the local group's data with the group data on the server 
         //The group must exist on the server.
-        public refresh(callbacks: { success(theRefreshedGroup:KiiGroup);failure(theGroup:KiiGroup, anErrorString:string)});
+        public refresh(callbacks: { success(theRefreshedGroup: KiiGroup); failure(theGroup: KiiGroup, anErrorString: string) });
         //Removes a user from the given group 
         //This method will NOT access the server immediately.
         public removeUser(member: KiiUser);
@@ -259,7 +259,7 @@ declare module KiiCloud {
         //Check if given ID is valid for object ID.
         public static isValidObjectID(objectId: string): boolean;
         //Move KiiObject body from an object to another object.
-        public moveBody(targetObjectUri: string, callbacks: { success(theSrcObject: KiiObject, theTgtObjectUri: string); failure(theSrcObject: KiiObject, theTgtObjectUri: string, anErrorString: string)});
+        public moveBody(targetObjectUri: string, callbacks: { success(theSrcObject: KiiObject, theTgtObjectUri: string); failure(theSrcObject: KiiObject, theTgtObjectUri: string, anErrorString: string) });
         //Get the ACL handle for this file 
         //Any KiiACLEntry objects added or revoked from this ACL object will be appended to / removed from the server on ACL save.
         public objectACL(): KiiACL;
@@ -269,25 +269,25 @@ declare module KiiCloud {
         //Generate a new KiiObject based on a given URI
         public static objectWithURI(uri: string): KiiObject;
         //Publish object body.
-        public publishBody(callbacks: { success(obj: KiiObject, publishedUrl: string); failure(obj: KiiObject, anErrorString: string)});
+        public publishBody(callbacks: { success(obj: KiiObject, publishedUrl: string); failure(obj: KiiObject, anErrorString: string) });
         //Publish object body with expiration date.
         public publishBodyExpiresAt(expiresAt: Date, callbacks: { success(obj: KiiObject, publishedUrl: string); failure(obj: KiiObject, anErrorString: string) });
         //Publish object body with expiration duration.
         public publishBodyExpiresIn(expiresIn: number, callbacks: { success(obj: KiiObject, publishedUrl: string); failure(obj: KiiObject, anErrorString: string) });
         //Updates the local object's data with the user data on the server 
         //The object must exist on the server.
-        public refresh(callbacks: { success(theRefreshedObject: KiiObject); failure(theObject: KiiObject, anErrorString: string)});
+        public refresh(callbacks: { success(theRefreshedObject: KiiObject); failure(theObject: KiiObject, anErrorString: string) });
         //Create or update the KiiObject on KiiCloud.
-        public save(callbacks: { success(theSavedObject: KiiObject); failure(theObject: KiiObject, anErrorString: string)}, overwrite?:boolean);
+        public save(callbacks: { success(theSavedObject: KiiObject); failure(theObject: KiiObject, anErrorString: string) }, overwrite?: boolean);
         //Create or update the KiiObject on KiiCloud.
-        public saveAllFields(callbacks: { success(theSavedObject: KiiObject); failure(theObject: KiiObject, anErrorString: string) }, overwrite?:boolean);
+        public saveAllFields(callbacks: { success(theSavedObject: KiiObject); failure(theObject: KiiObject, anErrorString: string) }, overwrite?: boolean);
         //Sets a key / value pair to a KiiObject 
         //If the key already exists, its value will be written over.
         public set<T>(key: string, value: T);
         //Set Geo point to this object with the specified key.
-        public setGeoPoint(key:string, KiiGeoPoint:KiiGeoPoint);
+        public setGeoPoint(key: string, KiiGeoPoint: KiiGeoPoint);
         //Upload body data of this object.
-        public uploadBody(srcDataBlob: Blob, callbacks: { progress(evt); success(obj: KiiObject); failure(obj: KiiObject, anErrorString: string)});
+        public uploadBody(srcDataBlob: Blob, callbacks: { progress(evt); success(obj: KiiObject); failure(obj: KiiObject, anErrorString: string) });
     }
 }
 
@@ -297,8 +297,8 @@ declare module KiiCloud {
         //Get the limit of the current query
         public getLimit(): number;
         //Create a KiiQuery object based on a KiiClause
-        //By passing null as the ‘clause’ parameter, all objects can be retrieved.
-        public static queryWithClause(clause: KiiClause);
+        //By passing null as the 'clause' parameter, all objects can be retrieved.
+        public static queryWithClause(clause?: KiiClause);
         //Set the limit of the given query
         public setLimit(value: number);
         //Set the query to sort by a field in ascending order If a sort has already been set, it will be overwritten.
@@ -310,9 +310,9 @@ declare module KiiCloud {
 
 // KiiSocialConnect
 declare module KiiCloud {
-    enum KiiSocialNetworkName{
-        FACEBOOK=1,
-        TWITTER=2,
+    enum KiiSocialNetworkName {
+        FACEBOOK = 1,
+        TWITTER = 2,
     }
     export class KiiSocialConnect {
         //Retrieve the current user's access token expiration date from a social network The network must be set up and linked to the current user.
@@ -338,18 +338,18 @@ declare module KiiCloud {
 declare module KiiCloud {
     export class KiiUser {
         //Authenticates a user with the server
-        public static authenticate(userIdentifier: string, password: string, callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string)});
+        public static authenticate(userIdentifier: string, password: string, callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
         //Asynchronously authenticates a user with the server using a valid access token Authenticates a user with the server.
         public static authenticateWithToken(accessToken: string, callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
         //Creates a reference to a bucket for this user 
         //The bucket will be created / accessed within this user's scope
         public bucketWithName(bucketName: string): KiiBucket;
         //Updates the user's email address on the server
-        public changeEmail(newEmail: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string)});
+        public changeEmail(newEmail: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
         //Updates the user's phone number on the server
         public changePhone(newPhoneNumber: string, callbacks: { success(theUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
         //Find registered KiiUser with the email.
-        public static findUserByEmail(email:string, callbacks: { success(theFoundUser:KiiUser); failure(anErrorString:string) });
+        public static findUserByEmail(email: string, callbacks: { success(theFoundUser: KiiUser); failure(anErrorString: string) });
         //Find registered KiiUser with the phone.
         public static findUserByPhone(phone: string, callbacks: { success(theFoundUser: KiiUser); failure(anErrorString: string) });
         //Find registered KiiUser with the user name.
@@ -401,7 +401,7 @@ declare module KiiCloud {
         //The user must exist on the server.
         public refresh(callbacks: { success(theRefreshedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
         //Registers a user as pseudo user with the server
-        public static registerAsPseudoUser(callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) }, userFields?:Object);
+        public static registerAsPseudoUser(callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) }, userFields?: Object);
         //Registers a user with the server 
         //The user object must have an associated email / password combination.
         public register(callbacks: { success(theAuthedUser: KiiUser); failure(theUser: KiiUser, anErrorString: string) });
@@ -459,7 +459,7 @@ declare module KiiCloud {
     }
 }
 
-declare var KiiSite : KiiCloud.KiiSite;
+declare var KiiSite: KiiCloud.KiiSite;
 import Kii = KiiCloud.Kii;
 import KiiACL = KiiCloud.KiiACL;
 import KiiACLAction = KiiCloud.KiiACLAction;

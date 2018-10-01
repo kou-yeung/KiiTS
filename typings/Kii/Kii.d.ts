@@ -125,9 +125,9 @@ declare module KiiCloud {
         //Any KiiACLEntry objects added or revoked from this ACL object will be appended to / removed from the server on ACL save.
         public acl(): KiiACL;
         //Execute count aggregation of all clause query on current bucket.
-        public count(callbacks: { success(bucket: KiiBucket, query: KiiQuery, count: any); failure(bucket: KiiBucket, query: KiiQuery, errorString: string) });
+        public count(callbacks: { success(bucket: KiiBucket, query: KiiQuery, count: number); failure(bucket: KiiBucket, query: KiiQuery, errorString: string) });
         //Execute count aggregation of specified query on current bucket.
-        public countWithQuery(query: KiiQuery, callbacks: { success(bucket: KiiBucket, query: KiiQuery, count: any); failure(bucket: KiiBucket, query: KiiQuery, errorString: string) });
+        public countWithQuery(query: KiiQuery, callbacks: { success(bucket: KiiBucket, query: KiiQuery, count: number); failure(bucket: KiiBucket, query: KiiQuery, errorString: string) });
         //Create a KiiObject within the current bucket 
         //The object will not be created on the server until the KiiObject is explicitly saved.
         public createObject(): KiiObject;
@@ -150,7 +150,7 @@ declare module KiiCloud {
         //Create a KiiClause with the AND operator concatenating multiple KiiClause objects
         public static and(...restOfClause: KiiClause[]);
         //Create an expression of the form(key == value)
-        public static equals(key: string, value: any);
+        public static equals(key: string, value: any): KiiClause;
         //Create a clause of geo box.
         public static geoBox(key: string, northEast: KiiGeoPoint, southWest: KiiGeoPoint): KiiClause;
         //Create a clause of geo distance.
@@ -237,6 +237,8 @@ declare module KiiCloud {
 // KiiObject
 declare module KiiCloud {
     export class KiiObject {
+        //Delete the object from the server.
+        public delete(callbacks: { success(theDeletedObject: KiiObject); failure(obj: KiiObject, anErrorString: string) });
         //Delete the object body from the server.
         public deleteBody(callbacks: { success(obj: KiiObject); failure(obj: KiiObject, anErrorString: string) });
         //Download body data of this object.
@@ -251,6 +253,7 @@ declare module KiiCloud {
         //Gets the geo point associated with the given key.
         public getGeoPoint(key: string): KiiGeoPoint;
         //Get the modified date of the given object, assigned by the server
+        public getKeys(): string[];
         public getModified(): string;
         //Get the application - defined type name of the object
         public getObjectType(): string;
@@ -298,7 +301,7 @@ declare module KiiCloud {
         public getLimit(): number;
         //Create a KiiQuery object based on a KiiClause
         //By passing null as the 'clause' parameter, all objects can be retrieved.
-        public static queryWithClause(clause?: KiiClause);
+        public static queryWithClause(clause?: KiiClause): KiiQuery;
         //Set the limit of the given query
         public setLimit(value: number);
         //Set the query to sort by a field in ascending order If a sort has already been set, it will be overwritten.
